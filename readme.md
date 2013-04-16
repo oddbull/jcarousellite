@@ -10,6 +10,8 @@ Changelog
 ---------
 Fix to work with google closure compiler.
 
+Added functionality to support autoscrolling responsiveness.  Mouseenter, mouseleave will stop/start scrolling when autoscrolling is enabled and hoverStop is true. Autoscrolling will also stop when nav buttons are used.
+
 
 Further Information
 --------------------

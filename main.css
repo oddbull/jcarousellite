@@ -1,0 +1,3 @@
+#my-list{height:350px;}
+ul.lister{height:300px; overflow:scroll; list-style-type:none;}
+ul.lister li{height:25px; border-bottom:solid 1px #CCC; padding:10px;}

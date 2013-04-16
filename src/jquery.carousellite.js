@@ -208,6 +208,7 @@ $.fn.jCarouselLite = function(o) {
         btnGo: null,
         mouseWheel: false,
         auto: null,
+        hoverStop: false,
 
         speed: 200,
         easing: null,
@@ -224,6 +225,7 @@ $.fn.jCarouselLite = function(o) {
 
     return this.each(function() {                           // Returns the element collection. Chainable.
 
+        var timer = null;
         var running = false, animCss=o.vertical?"top":"left", sizeCss=o.vertical?"height":"width";
         var div = $(this), ul = $("ul", div), tLi = $("li", ul), tl = tLi.size(), v = o.visible;
 
@@ -250,13 +252,33 @@ $.fn.jCarouselLite = function(o) {
         div.css(sizeCss, divSize+"px");                     // Width of the DIV. length of visible images
 
         if(o.btnPrev)
-            $(o.btnPrev).click(function() {
+            $(o.btnPrev).click(function(e) {
+                e.preventDefault();
+                clearInterval(timer);//stop the autoscrolling
                 return go(curr-o.scroll);
             });
 
         if(o.btnNext)
-            $(o.btnNext).click(function() {
+            $(o.btnNext).click(function(e) {
+                e.preventDefault();
+                clearInterval(timer);//stop the autoscrolling
                 return go(curr+o.scroll);
+            });
+            
+        if(o.btnStop)
+            $(o.btnStop).click(function(e) {
+                //console.debug("stop the auto scroller...");
+                e.preventDefault();
+                clearInterval(timer);
+             });
+        
+        if(o.btnStart)
+            $(o.btnStart).click(function(e) {
+                //console.debug("start the auto scroller...");
+                timer = setInterval(function() {
+                    go(curr+o.scroll);
+                }, o.auto+o.speed);
+                e.preventDefault();
             });
 
         if(o.btnGo)
@@ -271,10 +293,36 @@ $.fn.jCarouselLite = function(o) {
                 return d>0 ? go(curr-o.scroll) : go(curr+o.scroll);
             });
 
-        if(o.auto)
-            setInterval(function() {
+        if(o.auto){
+             timer = setInterval(function() {
+                 go(curr+o.scroll);
+             }, o.auto+o.speed);
+        }
+
+        if(o.auto && o.hoverStop){
+            ul.mouseenter(function(){stopAutoScrolling();})
+            ul.mouseleave(function(){startAutoScrolling();})
+            //$(o.btnPrev).hover(function(){stopAutoScrolling();})
+        }
+
+        //stop the auto scrolling if it's in effect
+        function stopAutoScrolling(){
+            if ((typeof timer === 'undefined') || (timer == null)){
+                return false; //there's no timer so don't try to stop anything.
+            }
+            else{
+                //console.debug("stop the auto scrolling...");
+                clearInterval(timer); // a timer exists, clear the Interval
+            }
+
+        }
+        //restart the auto scrolling if it's in effect
+        function startAutoScrolling(){
+            //console.debug("start the auto scrolling...");
+            timer = setInterval(function() {
                 go(curr+o.scroll);
             }, o.auto+o.speed);
+        }
 
         function vis() {
             return li.slice(curr).slice(0,v);
