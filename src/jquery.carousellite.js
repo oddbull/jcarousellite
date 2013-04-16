@@ -11,6 +11,9 @@
  *
  * Version: 1.0.1
  * Note: Requires jquery 1.2 or above from version 1.0.1
+ * 
+ * This forked version @ https://github.com/oddbull/jcarousellite includes options for starting and stopping
+ * the autoscrolling as well as functionality to do so on mouseover etc. 
  */
 
 /**
@@ -103,6 +106,27 @@
  * @desc You can make your carousel auto-navigate itself by specfying a millisecond value in this option.
  * The value you specify is the amount of time between 2 slides. The default is null, and that disables auto scrolling.
  * Specify this value and magically your carousel will start auto scrolling.
+ *
+ * @option hoverStop : boolean - default is false, meaning autoscroll will not stop on hover.
+ * @example
+ * $(".carousel").jCarouselLite({
+ *      auto: 800,
+ *      speed: 500,
+ *      hoverStop: true
+ * });
+ * @desc You can make your autoscrolling carousel stop and restart on mouseenter or mouseleave respectively.  The default
+ * is false meaning your autoscroll will not stop when the mouse hovers on the scroller.
+ *
+ * @option btnStart, btnStop : string - no defaults
+ * @example
+ * $(".carousel").jCarouselLite({
+ *      auto: 800,
+ *      speed: 500,
+ *      btnStart: ".start",
+ *      btnStop: ".stop"
+ * });
+ * @desc Creates a basic autoscrolling carousel. Clicking "btnStart" starts the autoscrolling and "btnStop" stops autoscrolling.
+ *
  *
  * @option speed : number - 200 is default
  * @example
